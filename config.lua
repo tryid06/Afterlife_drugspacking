@@ -1,5 +1,6 @@
 Config = {}
 
+Config.Scaleitem = 'weight_scale'
 
 Config.Items = {
 	{

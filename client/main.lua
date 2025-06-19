@@ -28,8 +28,6 @@ local PlaceItem = function()
 
 	local obj = PlaceObject(GetEntityCoords(PlayerPedId()))
 	SetEntityCollision(obj, false, false)
-	SetEntityAlpha(obj, 100, false)
-
 	while true do
 		local hit, entityhit, endcoords, surfacenormal, materialhash = lib.raycast.fromCamera(511, 4, 4)
 		SetEntityCoords(obj, endcoords.x, endcoords.y, endcoords.z)
@@ -134,3 +132,4 @@ end)
 
 
 RegisterNetEvent('ResourceName:RemoveLocalItem', RemoveLocalEntity)
+RegisterNetEvent('resourceName:PlaceItem', PlaceItem)
