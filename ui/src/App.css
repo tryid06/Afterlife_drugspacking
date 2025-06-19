@@ -2,7 +2,7 @@
 body {
   /* background: url('./assets/background.png');
   background-size: cover; */
-  background-color: rgb(155, 155, 155);
+  /* background-color: rgb(155, 155, 155); */
     height: 100%;
   user-select: none;
   overflow: hidden;
@@ -68,7 +68,7 @@ body {
 }
 
 
-.items div{
+.item, .disabled-item{
   width: 80px;
   height: 80px;
   display: flex;
@@ -79,7 +79,8 @@ body {
   background-color: rgba(240, 248, 255, 0.1);
 }
 
-.items div:hover{
+.item:hover{
+  cursor: pointer;
   background-color: rgba(240, 248, 255, 0.555);
 }
 
