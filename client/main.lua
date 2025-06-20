@@ -28,29 +28,32 @@ local PlaceItem = function()
 
 	local obj = PlaceObject(GetEntityCoords(PlayerPedId()))
 	SetEntityCollision(obj, false, false)
+	SetEntityDrawOutlineColor(10, 170, 210, 200)
+	SetEntityDrawOutlineShader(1)
+	SetEntityDrawOutline(obj, true)
 
 	NuiMessage("Instructions", true)
 	while true do
 		local hit, entityhit, endcoords, surfacenormal, materialhash = lib.raycast.fromCamera(511, 4, 4)
 		SetEntityCoords(obj, endcoords.x, endcoords.y, endcoords.z)
-		PlaceObjectOnGroundProperly(obj)
+		-- PlaceObjectOnGroundProperly(obj)
 		CreateObject()
 
 		if IsControlPressed(0, 38) then
 			Coords = endcoords
-			NuiMessage("Instructions", false)
 			break
 		end
 
 		if IsControlPressed(0, 202) then
-			NuiMessage("Instructions", false)
 			break
 		end
 		Wait(0)
 	end
 
+	NuiMessage("Instructions", false)
 	DeleteObject(obj)
 	if Coords then
+		PlaySoundFrontend(-1, "Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds", 1)
 		TriggerServerEvent('ResourceName:AddItem', Coords)
 	end
 end
@@ -81,6 +84,7 @@ local AddLocalEntity = function(id, coords)
 				label = 'Remove Scale',
 				icon = 'xmark',
 				onSelect = function()
+					PlaySoundFrontend(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1)
 					TriggerServerEvent('ResourceName:RemoveItem',id)
 				end
 			}

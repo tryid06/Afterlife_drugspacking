@@ -12,7 +12,7 @@ const Instructions = () =>  {
         <div className="instructions">
 
             <div className="key">
-                <div>ENTER</div>
+                <div>E</div>
                 <span>Place</span>
             </div>
             <div className="key">

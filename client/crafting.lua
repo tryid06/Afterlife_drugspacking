@@ -9,7 +9,11 @@ local PackingMenu = function(cdata)
 		local data = cdata.outputitems[i]
 
 		local count = exports.ox_inventory:Search('count', data.requireitem)
-		local weight = exports.ox_inventory:Items(data.requireitem).weight
+		local reqitem = exports.ox_inventory:Items(data.requireitem)
+		local weight = 0
+		if reqitem then
+			weight = reqitem.weight
+		end
 		if count > 0 then count = false else count = true end
 
 		options[#options + 1] = {
@@ -47,14 +51,23 @@ OpenMenu = function()
 	end
 
 
+    RequestAnimDict(Config.animtion.animDict)
+	while (not HasAnimDictLoaded(Config.animtion.animDict)) do Wait(0) end
+	TaskPlayAnim(PlayerPedId(),Config.animtion.animDict,Config.animtion.anim,1.0,1.0,-1,1,1.0,true,true,true)
+
+	PlaySoundFrontend(-1, "Put_Away", "Phone_SoundSet_Michael", 1)
 	SetNuiFocus(true, true)
 	NuiMessage('SendData', options)
 end
 
 RegisterNuiCallback('ReturnData', function(data, cb)
+
+	PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Default", 1)
+
 	if state == 'mainmenu' then
 		PackingMenu(data)
 	else
+
 		SetNuiFocus(false,false)
 		NuiMessage('SendData', false)
 		if lib.progressBar({
@@ -73,12 +86,15 @@ RegisterNuiCallback('ReturnData', function(data, cb)
 			TriggerServerEvent('resourceName:PackItem', data.name, data.amountneeded, data.outputitems[key].requireitem,
 				data.outputitems[key].rewarditem)
 		end
+		ClearPedTasks(PlayerPedId())
 	end
 	cb({})
 end)
 
 
 RegisterNuiCallback('resetnuifocus', function(data, cb)
+	ClearPedTasks(PlayerPedId())
+	PlaySoundFrontend(-1, "Put_Away", "Phone_SoundSet_Michael", 1)
 	SetNuiFocus(false,false);
 	cb({})
 end)
