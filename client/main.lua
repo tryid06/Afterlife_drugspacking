@@ -28,6 +28,8 @@ local PlaceItem = function()
 
 	local obj = PlaceObject(GetEntityCoords(PlayerPedId()))
 	SetEntityCollision(obj, false, false)
+
+	NuiMessage("Instructions", true)
 	while true do
 		local hit, entityhit, endcoords, surfacenormal, materialhash = lib.raycast.fromCamera(511, 4, 4)
 		SetEntityCoords(obj, endcoords.x, endcoords.y, endcoords.z)
@@ -36,10 +38,12 @@ local PlaceItem = function()
 
 		if IsControlPressed(0, 38) then
 			Coords = endcoords
+			NuiMessage("Instructions", false)
 			break
 		end
 
 		if IsControlPressed(0, 202) then
+			NuiMessage("Instructions", false)
 			break
 		end
 		Wait(0)
@@ -52,9 +56,9 @@ local PlaceItem = function()
 end
 
 
-RegisterCommand('test', function()
-	OpenMenu()
-end)
+-- RegisterCommand('test', function()
+-- 	OpenMenu()
+-- end)
 
 
 
