@@ -7,7 +7,7 @@ import { nuicallback } from "../utils/nuicallback";
 import Fade from "../utils/Fade";
 
 const Menu = () => {
-  const [Data, setData] = useState(false);
+  const [Data, setData] = useState([]);
   const [Counter, setCounter] = useState(false);
 
   NuiEvent("SendData", (data) => setData(data));

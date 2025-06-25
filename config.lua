@@ -7,6 +7,8 @@ Config.animtion = {
 	anim = "base",
 }
 
+Config.Inventory = 'ox_inventory' -- ox_inventory | qb-inventory
+
 Config.Items = {
 	{
 		name = 'coke',
@@ -16,17 +18,32 @@ Config.Items = {
 			{
 				label = '30oz Bag',
 				requireitem = '30oz_plastic_bag',
-				rewarditem = '30oz_coke'
+				rewarditem = {
+					{
+						name = '30oz_coke',
+						amount = 1
+					}
+				}
 			},
 			{
 				label = '60oz Bag',
 				requireitem = '60oz_plastic_bag',
-				rewarditem = '60oz_coke'
+				rewarditem = {
+					{
+						name = '60oz_coke',
+						amount = 1
+					}
+				}
 			},
 			{
 				label = '90oz Bag',
 				requireitem = '90oz_plastic_bag',
-				rewarditem = '90oz_coke'
+				rewarditem = {
+					{
+						name = '90oz_coke',
+						amount = 1
+					}
+				}
 			},
 		}
 	},
@@ -38,17 +55,33 @@ Config.Items = {
 			{
 				label = '30oz Bag',
 				requireitem = '30oz_plastic_bag',
-				rewarditem = '30oz_weed'
+				rewarditem = {
+					{
+						name = '30oz_weed',
+						amount = 1
+					}
+				}
 			},
 			{
 				label = '60oz Bag',
 				requireitem = '60oz_plastic_bag',
-				rewarditem = '60oz_weed'
+				rewarditem = {
+					{
+						name = '60oz_weed',
+						amount = 1
+					}
+				}
 			},
 			{
 				label = '90oz Bag',
 				requireitem = '90oz_plastic_bag',
-				rewarditem = '90oz_weed'
+				rewarditem = {
+					{
+						name = '90oz_weed',
+						amount = 1
+					}
+				}
+
 			},
 		}
 	},
@@ -60,17 +93,32 @@ Config.Items = {
 			{
 				label = '30oz Bag',
 				requireitem = '30oz_plastic_bag',
-				rewarditem = '30oz_meth'
+				rewarditem = {
+					{
+						name = '30oz_meth',
+						amount = 1
+					}
+				}
 			},
 			{
 				label = '60oz Bag',
 				requireitem = '60oz_plastic_bag',
-				rewarditem = '60oz_meth'
+				rewarditem = {
+					{
+						name = '60oz_meth',
+						amount = 1
+					}
+				}
 			},
 			{
 				label = '90oz Bag',
 				requireitem = '90oz_plastic_bag',
-				rewarditem = '90oz_meth'
+				rewarditem = {
+					{
+						name = '90oz_meth',
+						amount = 1
+					}
+				}
 			},
 		}
 	}

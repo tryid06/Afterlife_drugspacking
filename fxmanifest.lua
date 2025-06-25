@@ -23,6 +23,10 @@ client_scripts {
 ui_page 'ui/dist/index.html'
 
 
+escrow_ignore {
+	'config.lua'
+}
+
 files {
     'ui/dist/index.html',
 	'ui/dist/assets/*.js',

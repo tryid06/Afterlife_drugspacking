@@ -84,7 +84,7 @@ RegisterNuiCallback('ReturnData', function(data, cb)
 			local key = data.key
 			local data = data.data
 			TriggerServerEvent('resourceName:PackItem', data.name, data.amountneeded, data.outputitems[key].requireitem,
-				data.outputitems[key].rewarditem)
+					)
 		end
 		ClearPedTasks(PlayerPedId())
 	end

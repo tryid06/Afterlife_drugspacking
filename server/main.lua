@@ -1,5 +1,5 @@
 GlobalState.Items = {}
-
+local Inventory = exports[Config.Inventory]
 
 
 RegisterNetEvent('ResourceName:AddItem', function (coords)
@@ -10,7 +10,7 @@ RegisterNetEvent('ResourceName:AddItem', function (coords)
 		coords = coords
 	}
 	GlobalState.Items = items
-	exports.ox_inventory:RemoveItem(source, Config.Scaleitem, 1)
+	Inventory:RemoveItem(source, Config.Scaleitem, 1)
 end)
 
 
@@ -18,7 +18,7 @@ RegisterNetEvent('ResourceName:RemoveItem', function (id)
 	local items = GlobalState.Items
 	for i = 1,#items do
 		if items[i].id == id then
-			exports.ox_inventory:AddItem(source, Config.Scaleitem, 1)
+			Inventory:AddItem(source, Config.Scaleitem, 1)
 			TriggerClientEvent('ResourceName:RemoveLocalItem',-1,id)
 			table.remove(items,i)
 			break;
@@ -29,8 +29,10 @@ end)
 
 
 RegisterNetEvent('resourceName:PackItem', function (removename,removecount,removeitem2,rewarditem)
-	if exports.ox_inventory:RemoveItem(source, removename, removecount) and exports.ox_inventory:RemoveItem(source, removeitem2, 1) then
-	    exports.ox_inventory:AddItem(source, rewarditem, 1)	
+	if Inventory:RemoveItem(source, removename, removecount) and Inventory:RemoveItem(source, removeitem2, 1) then
+	    for i = 1,#rewarditem do
+		    Inventory:AddItem(source, rewarditem[i].name, rewarditem[i].amount)	
+		end
 	end
 end)
 
@@ -40,3 +42,10 @@ AddEventHandler('ox_inventory:usedItem', function(playerId, name, slotId, metada
 		TriggerClientEvent('resourceName:PlaceItem', playerId)
 	end
 end)
+
+if Config.Inventory == 'qb-inventory' then
+	local QBCore = exports['qb-core']:GetCoreObject()
+	QBCore.Functions.CreateUseableItem(Config.Scaleitem, function(source, item)
+		TriggerClientEvent('resourceName:PlaceItem', source)
+	end)
+end
