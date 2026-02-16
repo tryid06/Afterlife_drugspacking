@@ -7,7 +7,6 @@ NuiMessage = function(action, data)
     })
 end
 
-
 local PlaceObject = function(coords)
 	local modelHash = `bkr_prop_coke_scale_01`
 
@@ -19,10 +18,11 @@ local PlaceObject = function(coords)
 		end
 	end
 
-
 	local obj = CreateObject(modelHash, coords, false)
+	SetEntityAsMissionEntity(obj, true, true)
 	return obj
 end
+
 local PlaceItem = function()
 	local Coords = false
 
@@ -32,12 +32,10 @@ local PlaceItem = function()
 	SetEntityDrawOutlineShader(1)
 	SetEntityDrawOutline(obj, true)
 
-	NuiMessage("Instructions", true)
+	NuiMessage('Instructions', true)
 	while true do
-		local hit, entityhit, endcoords, surfacenormal, materialhash = lib.raycast.fromCamera(511, 4, 4)
+		local _, _, endcoords = lib.raycast.fromCamera(511, 4, 4)
 		SetEntityCoords(obj, endcoords.x, endcoords.y, endcoords.z)
-		-- PlaceObjectOnGroundProperly(obj)
-		CreateObject()
 
 		if IsControlPressed(0, 38) then
 			Coords = endcoords
@@ -50,24 +48,15 @@ local PlaceItem = function()
 		Wait(0)
 	end
 
-	NuiMessage("Instructions", false)
+	NuiMessage('Instructions', false)
 	DeleteObject(obj)
 	if Coords then
-		PlaySoundFrontend(-1, "Place_Prop_Success", "DLC_Dmod_Prop_Editor_Sounds", 1)
-		TriggerServerEvent('ResourceName:AddItem', Coords)
+		PlaySoundFrontend(-1, 'Place_Prop_Success', 'DLC_Dmod_Prop_Editor_Sounds', 1)
+		TriggerServerEvent('susidrugpack:AddItem', Coords)
 	end
 end
 
-
--- RegisterCommand('test', function()
--- 	OpenMenu()
--- end)
-
-
-
 local localentities = {}
-
-
 
 local AddLocalEntity = function(id, coords)
 	if (not localentities[id]) then
@@ -84,8 +73,8 @@ local AddLocalEntity = function(id, coords)
 				label = 'Remove Scale',
 				icon = 'xmark',
 				onSelect = function()
-					PlaySoundFrontend(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1)
-					TriggerServerEvent('ResourceName:RemoveItem',id)
+					PlaySoundFrontend(-1, 'PICK_UP', 'HUD_FRONTEND_DEFAULT_SOUNDSET', 1)
+					TriggerServerEvent('susidrugpack:RemoveItem', id)
 				end
 			}
 		}
@@ -96,48 +85,30 @@ end
 local RemoveLocalEntity = function(id)
 	local entity = localentities[id]
 	localentities[id] = nil
-	if DoesEntityExist(entity) then
+	if entity and DoesEntityExist(entity) then
 		DeleteObject(entity)
 	end
 end
 
-local alreadyinzone = false
-
 CreateThread(function()
 	while true do
-		local sleep = 500
-		local items = GlobalState.Items
+		local items = GlobalState.Items or {}
 		local playercoords = GetEntityCoords(PlayerPedId())
 
 		for i = 1, #items do
-			local inzone = false
 			local coords = items[i].coords
-
 			local distance = #(playercoords - coords)
 
 			if (distance < 20) then
-				AddLocalEntity(items[i].id, items[i].coords)
-				-- inzone = true
+				AddLocalEntity(items[i].id, coords)
 			else
 				RemoveLocalEntity(items[i].id)
 			end
-
-			-- if inzone and not alreadyinzone then
-
-			-- 	alreadyinzone = true
-			-- end
-
-			-- if not inzone and alreadyinzone then
-
-			-- 	alreadyinzone = false
-			-- end
 		end
-		Wait(sleep)
+
+		Wait(500)
 	end
 end)
 
-
-
-
-RegisterNetEvent('ResourceName:RemoveLocalItem', RemoveLocalEntity)
-RegisterNetEvent('resourceName:PlaceItem', PlaceItem)
+RegisterNetEvent('susidrugpack:RemoveLocalItem', RemoveLocalEntity)
+RegisterNetEvent('susidrugpack:PlaceItem', PlaceItem)

@@ -1,5 +1,8 @@
 local state = 'none'
-local globaldata
+
+local function getAnimationConfig()
+	return Config.animation or Config.animtion
+end
 
 local PackingMenu = function(cdata)
 	local options = {}
@@ -28,7 +31,6 @@ local PackingMenu = function(cdata)
 	NuiMessage('SendData', options)
 end
 
-
 OpenMenu = function()
 	local options = {}
 	state = 'mainmenu'
@@ -50,25 +52,23 @@ OpenMenu = function()
 		end
 	end
 
+	local animation = getAnimationConfig()
+    RequestAnimDict(animation.animDict)
+	while (not HasAnimDictLoaded(animation.animDict)) do Wait(0) end
+	TaskPlayAnim(PlayerPedId(), animation.animDict, animation.anim, 1.0, 1.0, -1, 1, 1.0, true, true, true)
 
-    RequestAnimDict(Config.animtion.animDict)
-	while (not HasAnimDictLoaded(Config.animtion.animDict)) do Wait(0) end
-	TaskPlayAnim(PlayerPedId(),Config.animtion.animDict,Config.animtion.anim,1.0,1.0,-1,1,1.0,true,true,true)
-
-	PlaySoundFrontend(-1, "Put_Away", "Phone_SoundSet_Michael", 1)
+	PlaySoundFrontend(-1, 'Put_Away', 'Phone_SoundSet_Michael', 1)
 	SetNuiFocus(true, true)
 	NuiMessage('SendData', options)
 end
 
 RegisterNuiCallback('ReturnData', function(data, cb)
-
-	PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Default", 1)
+	PlaySoundFrontend(-1, 'Menu_Accept', 'Phone_SoundSet_Default', 1)
 
 	if state == 'mainmenu' then
 		PackingMenu(data)
 	else
-
-		SetNuiFocus(false,false)
+		SetNuiFocus(false, false)
 		NuiMessage('SendData', false)
 		if lib.progressBar({
 				duration = 2000,
@@ -82,21 +82,17 @@ RegisterNuiCallback('ReturnData', function(data, cb)
 				}
 			}) then
 			local key = data.key
-			local data = data.data
-			TriggerServerEvent('resourceName:PackItem', data.name, data.amountneeded, data.outputitems[key].requireitem,
-					)
+			local selectedData = data.data
+			TriggerServerEvent('susidrugpack:PackItem', selectedData.name, selectedData.amountneeded, selectedData.outputitems[key].requireitem)
 		end
 		ClearPedTasks(PlayerPedId())
 	end
 	cb({})
 end)
 
-
-RegisterNuiCallback('resetnuifocus', function(data, cb)
+RegisterNuiCallback('resetnuifocus', function(_, cb)
 	ClearPedTasks(PlayerPedId())
-	PlaySoundFrontend(-1, "Put_Away", "Phone_SoundSet_Michael", 1)
-	SetNuiFocus(false,false);
+	PlaySoundFrontend(-1, 'Put_Away', 'Phone_SoundSet_Michael', 1)
+	SetNuiFocus(false, false)
 	cb({})
 end)
-
-
