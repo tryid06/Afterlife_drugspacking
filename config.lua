@@ -2,10 +2,13 @@ Config = {}
 
 Config.Scaleitem = 'weight_scale'
 
-Config.animtion = {
+Config.animation = {
 	animDict = 'amb@prop_human_bum_bin@base',
-	anim = "base",
+	anim = 'base',
 }
+
+-- Backward compatibility for older config key.
+Config.animtion = Config.animation
 
 Config.Inventory = 'ox_inventory' -- ox_inventory | qb-inventory
 
@@ -81,7 +84,6 @@ Config.Items = {
 						amount = 1
 					}
 				}
-
 			},
 		}
 	},
